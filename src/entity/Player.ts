@@ -14,13 +14,13 @@ export class Player {
     @Column()
     last_name: string;
 
-    @Column()
+    @Column({nullable: true})
     name: string;
 
     @Column()
     year: string;
 
-    @Column()
+    @Column({nullable: true})
     height: string; 
     
     @Column("int")
@@ -29,10 +29,10 @@ export class Player {
     @Column("int")
     weight: number; 
 
-    @Column()
+    @Column({nullable: true})
     hometown: string; 
 
-    @Column()
+    @Column({nullable: true})
     last_school: string; 
 
     @ManyToOne(type=>Team, team=>team.players)

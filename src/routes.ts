@@ -42,14 +42,30 @@ export const TeamRoutes = [{
     action: "save"
 }, {
     method: "delete", 
-    route: "/:year/teams/:team_id"
+    route: "/:year/teams/:team_id", 
+    controller: TeamController, 
+    action: "remove"
 }]
 
 export const ConferenceRoutes = [{
+    method: "get", 
+    route: "/:year/conferences", 
+    controller: TeamController, 
+    action: "all"
+}, {
+    method: "get", 
+    route: "/:year/conferences/:conference_id",
+    controller: TeamController, 
+    action: "one"
+
+}, {
     method: "post", 
-    route: "/conferences", 
-    controller: ConferenceContoller, 
+    route: "/conferences",
+    controller: TeamController, 
     action: "save"
+}, {
+    method: "delete", 
+    route: "/:year/conferences/:conferences_id"
 }
     
 

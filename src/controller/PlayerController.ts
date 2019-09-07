@@ -1,7 +1,7 @@
 import {getRepository} from "typeorm";
 import {NextFunction, Request, Response} from "express";
 import {Player} from "../entity/Player";
-import { paginationUtils } from "../utils/paginationAndFilterBuilder";
+import { paginateAndApplyFilters } from "../utils/paginationAndFilterBuilder";
 import { QueryErrorFormatter } from "../utils/queryErrorFormatter";
 
 
@@ -12,18 +12,16 @@ export class PlayerController {
 
     async all(request: Request, response: Response, next: NextFunction) {
         var query = this.playerRepo.createQueryBuilder("player"); 
-
-        paginationUtils.filterBuilder(request, query, 'player'); 
-        paginationUtils.paginationBuilder(request, query); 
-
-        return query.getMany().catch((reason)=>{
+        paginateAndApplyFilters(request, query, 'player');
+        
+        return query.getMany()
+        .catch((reason)=>{
             response.status(400).send(QueryErrorFormatter.formatErrorMessage(reason));
         }); 
         
     }
 
     async one(request: Request, response: Response, next: NextFunction) {
-        console.log(request.params.player_id);
         
         return this.playerRepo
         .createQueryBuilder("player")
@@ -36,15 +34,45 @@ export class PlayerController {
     }
 
     async save(request: Request, response: Response, next: NextFunction) {
-        
+        //we need to verify a few things before we submit to the database
+        //if the height in inches is not submitted, we need to calculate it... and if it is incorrect, we need to inform the user. 
+        var player = <Player>request.body; 
+        try {
+            if (player.height != undefined) {
+                if (player.height_inches == undefined) {
+                    var height = player.height.split("'").map((x) => {
+                        return Number(x)
+                    });
+                    player.height_inches = height[0] * 12 + height[1];
+
+                }
+                else {
+                    //we need to verify the height
+                    var height = player.height.split("'").map((x) => {
+                        return Number(x)
+                    });
+
+                    if (player.height_inches != (height[0] * 12 + height[1])) {
+                        response.status(400).send('INCORECT HEIGHT IN INCHES, PLEASE RECALCULATE.')
+                        return
+                    }
+                }
+            }
+        }
+        catch{
+            response.status(400).send('INCORRECT FORMATTING FOR HEIGHT'); 
+            return; 
+        }
         return this.playerRepo
         .save(request.body)
         .then(()=>{
             response.status(200).send('SUCCESS')
+            
         })
         .catch((reason)=>{
+            
             response.status(400).send(
-                QueryErrorFormatter.formatErrorMessage(reason)
+                QueryErrorFormatter.formatErrorMessage(reason) 
             )
         });  
     }
