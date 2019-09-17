@@ -1,0 +1,283 @@
+{
+	"basePath": "/",
+	"consumes": [
+		"application/json"
+	],
+	"definitions": {
+		"Team": {
+			"properties": {
+				"team_id": {
+					"type": "number",
+					"format": "double"
+				},
+				"year": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"players": {
+					"$ref": "#/definitions/Player"
+				},
+				"conference": {
+					"$ref": "#/definitions/Conference"
+				}
+			},
+			"required": [
+				"team_id",
+				"year",
+				"name",
+				"players",
+				"conference"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Player": {
+			"properties": {
+				"player_id": {
+					"type": "number",
+					"format": "double"
+				},
+				"first_name": {
+					"type": "string"
+				},
+				"last_name": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"year": {
+					"type": "string"
+				},
+				"height": {
+					"type": "string"
+				},
+				"height_inches": {
+					"type": "number",
+					"format": "double"
+				},
+				"weight": {
+					"type": "number",
+					"format": "double"
+				},
+				"hometown": {
+					"type": "string"
+				},
+				"last_school": {
+					"type": "string"
+				},
+				"team": {
+					"$ref": "#/definitions/Team"
+				}
+			},
+			"required": [
+				"player_id",
+				"first_name",
+				"last_name",
+				"name",
+				"year",
+				"height",
+				"height_inches",
+				"weight",
+				"hometown",
+				"last_school",
+				"team"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Conference": {
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"year": {
+					"type": "string"
+				},
+				"teams": {
+					"$ref": "#/definitions/Team"
+				}
+			},
+			"required": [
+				"name",
+				"year",
+				"teams"
+			],
+			"type": "object",
+			"additionalProperties": true
+		}
+	},
+	"info": {
+		"title": "new-typeorm-project",
+		"version": "0.0.1",
+		"description": "Awesome project developed with TypeORM."
+	},
+	"paths": {
+		"/conferences/{conference_year}": {
+			"get": {
+				"operationId": "GetAllConferences",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"201": {
+						"description": "success"
+					}
+				},
+				"summary": "Get all conferences for a given year",
+				"tags": [
+					"Conference"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "conference_year",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"description": "value to filter on ex: name|filter",
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"description": "pagination value",
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "sort",
+						"required": false,
+						"type": "string"
+					}
+				]
+			},
+			"put": {
+				"operationId": "AddConference",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"summary": "Add a new conference",
+				"tags": [
+					"Conference"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "conference_year",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"conference_name": {
+									"type": "string"
+								}
+							},
+							"title": "AddConferenceBody",
+							"type": "object",
+							"required": [
+								"conference_name"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/conferences/{conference_year}/{conference_name}": {
+			"get": {
+				"operationId": "GetConference",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"201": {
+						"description": "Fetched",
+						"schema": {
+							"$ref": "#/definitions/Conference"
+						}
+					}
+				},
+				"summary": "Get a single conference",
+				"tags": [
+					"Conference"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "conference_year",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "path",
+						"name": "conference_name",
+						"required": true,
+						"type": "string"
+					}
+				]
+			},
+			"post": {
+				"operationId": "UpdateConference",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"201": {
+						"description": "updated"
+					}
+				},
+				"summary": "updates the conference",
+				"tags": [
+					"Conference"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "year of the conference",
+						"in": "path",
+						"name": "conference_year",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "path",
+						"name": "conference_name",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		}
+	},
+	"produces": [
+		"application/json"
+	],
+	"swagger": "2.0",
+	"securityDefinitions": {},
+	"host": "localhost:3000"
+}

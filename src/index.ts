@@ -5,35 +5,35 @@ import * as bodyParser from "body-parser";
 import {Request, Response} from "express";
 import {PlayerRoutes, TeamRoutes, ConferenceRoutes} from "./routes";
 import { ConferenceContoller } from "./controller/ConferenceController";
+import { RegisterRoutes } from "./routes/routes";
+import * as swaggerUI from 'swagger-ui-express'; 
 createConnection().then(async connection => {
 
     // create express app
     const app = express();
     app.use(bodyParser.json());
 
-    const allRoutes = [PlayerRoutes, 
-                       TeamRoutes, 
-                       ConferenceRoutes]
-
+    
+    
     // register all of the routes. 
-    allRoutes.forEach(Routes => {
-        Routes.forEach(route => {
-            (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
-                const result = (new (route.controller as any))[route.action](req, res, next);
-                if (result instanceof Promise) {
-                    result.then(result => result !== null && result !== undefined ? res.send(result) : res.send('success'));
-
-                } else if (result !== null && result !== undefined) {
-                    res.json(result);
-                }
-            });
-        });
-    })
+    
 
     // setup express app here
     // ...
 
     // start express server
+    RegisterRoutes(app); 
+
+    try{
+        const swaggerDocument = require('../swagger.json')
+        app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+    } catch(err){
+        console.log('unable to read swagger json', err);
+        
+    }
+    app._router.stack          // registered routes
+    .filter(r => r.route)    // take out all the middleware
+    .map(r => console.log(r.route.path))
     app.listen(3000);
 
     

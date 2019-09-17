@@ -46,7 +46,11 @@ export class paginationUtils {
                     sortName: sortArg[0],
                     sortValue: sortArg[1]
                 }
-                query.orderBy(`'${type}'.'${sort.sortName}'='${sort.sortValue}'`);
+                if (!isUndefined(this.cachedMetadata.has(type)) && 
+                    this.cachedMetadata.get(type).has(sort.sortName)){
+                        query.orderBy(`'${type}'.'${sort.sortName}'='${sort.sortValue}'`);
+                    }
+                
 
             }
         }
@@ -72,21 +76,20 @@ export class paginationUtils {
                         filterName: filterArg[0],
                         filterValue: filterArg[1]
                     }
-                    if (index == 0){
-                    query.where(`'${type}'.'${filter.filterName}' LIKE '%${filter.filterValue}%'`)
+                    if (!isUndefined(this.cachedMetadata.has(type)) &&
+                        this.cachedMetadata.get(type).has(filter.filterName)) {
+                        if (index == 0) {
+                            query.where(`'${type}'.'${filter.filterName}' LIKE '%${filter.filterValue}%'`)
+                        }
+                        else {
+                            query.andWhere(`'${type}'.'${filter.filterName}' LIKE '%${filter.filterValue}%'`)
+                        }
+                    }
+
                 }
-                    else{
-                        query.andWhere(`'${type}'.'${filter.filterName}' LIKE '%${filter.filterValue}%'`)
-                    }          
-                }
-                
+
             })
-            
-            
-            
         }
-        
-        
     }
 
     public static paginationBuilder(request: Request,

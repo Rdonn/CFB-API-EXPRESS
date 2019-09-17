@@ -1,0 +1,13 @@
+{
+    "swagger": {
+        "specVersion": 2,
+        "outputDirectory": ".", 
+        "entryFile": "./src/index.ts",
+        "host": "localhost:3000"
+    },
+    "routes": {
+        "basePath": "/", 
+        "entryFile": "./src/index.ts",
+        "routesDir": "./src/routes"
+    }
+}
