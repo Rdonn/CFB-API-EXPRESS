@@ -13,7 +13,8 @@
     "body-parser": "^1.18.1",
     "express": "^4.17.1",
     "reflect-metadata": "^0.1.10",
-    "sqlite3": "^4.0.3",
+    "sqlite3": "^4.1.1",
+    "swagger-ui-express": "^4.1.2",
     "typeorm": "0.2.18"
   },
   "scripts": {

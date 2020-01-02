@@ -7,20 +7,18 @@ import {PlayerRoutes, TeamRoutes, ConferenceRoutes} from "./routes";
 import { ConferenceContoller } from "./controller/ConferenceController";
 import { RegisterRoutes } from "./routes/routes";
 import * as swaggerUI from 'swagger-ui-express'; 
+import { ConferenceTeamController } from "./controller/ConferenceTeamController";
+import { TeamController } from "./controller/TeamController";
+import { StatisticsController } from "./controller/StatisticsController";
 createConnection().then(async connection => {
 
     // create express app
     const app = express();
     app.use(bodyParser.json());
-
+    console.log("here");
     
     
-    // register all of the routes. 
     
-
-    // setup express app here
-    // ...
-
     // start express server
     RegisterRoutes(app); 
 

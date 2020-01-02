@@ -10,6 +10,6 @@ export class Conference{
     year: string; 
 
     @OneToMany(type=>Team, team=>team.conference)
-    teams: Team; 
+    teams: Team[]; 
 
 }

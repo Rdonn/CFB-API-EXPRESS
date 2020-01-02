@@ -1,0 +1,17 @@
+
+> new-typeorm-project@0.0.1 start /home/ryan/Desktop/DesktopStorage1/cfb-API/CFB-API-EXPRESS
+> ts-node src/index.ts
+
+/players
+/players/:team_year/:team_name
+/teams/:conference_year/:conference_name
+/conferences/:conference_year
+/conferences/:conference_year/:conference_name
+/conferences/:conference_year/:conference_name
+/conferences/:conference_year
+/team/conferences/:team_year
+Express server has started on port 3000. Open http://localhost:3000/users to see results
+undefined undefined undefined undefined undefined
+undefined school
+undefined
+SELECT "player"."player_id" AS "player_player_id", "player"."year_played" AS "player_year_played", "player"."first_name" AS "player_first_name", "player"."last_name" AS "player_last_name", "player"."name" AS "player_name", "player"."year" AS "player_year", "player"."height" AS "player_height", "player"."height_inches" AS "player_height_inches", "player"."weight" AS "player_weight", "player"."hometown" AS "player_hometown", "player"."last_school" AS "player_last_school", "player"."teamYear" AS "player_teamYear", "player"."teamName" AS "player_teamName" FROM "player" "player" LIMIT 500

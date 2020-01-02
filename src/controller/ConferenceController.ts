@@ -36,6 +36,8 @@ export class ConferenceContoller extends Controller {
         var query = this.conferenceRepo
                         .createQueryBuilder('conference')
         paginateAndApplyFilters(request, query, 'conference')
+
+        return this.conferenceRepo.find({year:conference_year})
     }
 
     /**
@@ -90,6 +92,9 @@ export class ConferenceContoller extends Controller {
     @SuccessResponse('201', 'Created') // Custom success response
     @Put("/{conference_year}")
     async addConference(conference_year: string, @BodyProp() conference_name: string){
+        console.log("hit")
+        console.log(conference_name, conference_year);
+        
         this.conferenceRepo.insert({name: conference_name, 
                                     year: conference_year}); 
 

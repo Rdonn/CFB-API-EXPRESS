@@ -6,16 +6,13 @@ import { Conference } from "./Conference";
 @Entity()
 export class Team{
     @PrimaryColumn()
-    team_id: number; 
-
-    @PrimaryColumn()
     year:string; 
 
-    @Column()
+    @PrimaryColumn()
     name: string; 
     
     @OneToMany(type=>Player, players=>players.team)
-    players: Player;
+    players: Player[];
 
     @ManyToOne(type=>Conference, conferece=>conferece.teams)
     conference: Conference;

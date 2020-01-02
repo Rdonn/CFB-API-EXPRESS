@@ -4,40 +4,14 @@
 		"application/json"
 	],
 	"definitions": {
-		"Team": {
-			"properties": {
-				"team_id": {
-					"type": "number",
-					"format": "double"
-				},
-				"year": {
-					"type": "string"
-				},
-				"name": {
-					"type": "string"
-				},
-				"players": {
-					"$ref": "#/definitions/Player"
-				},
-				"conference": {
-					"$ref": "#/definitions/Conference"
-				}
-			},
-			"required": [
-				"team_id",
-				"year",
-				"name",
-				"players",
-				"conference"
-			],
-			"type": "object",
-			"additionalProperties": true
-		},
 		"Player": {
 			"properties": {
 				"player_id": {
 					"type": "number",
 					"format": "double"
+				},
+				"year_played": {
+					"type": "string"
 				},
 				"first_name": {
 					"type": "string"
@@ -46,6 +20,12 @@
 					"type": "string"
 				},
 				"name": {
+					"type": "string"
+				},
+				"pos": {
+					"type": "string"
+				},
+				"num": {
 					"type": "string"
 				},
 				"year": {
@@ -70,20 +50,122 @@
 				},
 				"team": {
 					"$ref": "#/definitions/Team"
+				},
+				"allPurposeRunning": {
+					"$ref": "#/definitions/AllPurposeRunning"
+				},
+				"fumbleReturns": {
+					"$ref": "#/definitions/FumbleReturns"
+				},
+				"interceptions": {
+					"$ref": "#/definitions/Interceptions"
+				},
+				"kickoffReturn": {
+					"$ref": "#/definitions/KickoffReturn"
+				},
+				"kickoffs": {
+					"$ref": "#/definitions/Kickoffs"
+				},
+				"miscDefense": {
+					"$ref": "#/definitions/MiscDefense"
+				},
+				"passing": {
+					"$ref": "#/definitions/Passing"
+				},
+				"placeKicking": {
+					"$ref": "#/definitions/PlaceKicking"
+				},
+				"puntReturn": {
+					"$ref": "#/definitions/PuntReturn"
+				},
+				"punting": {
+					"$ref": "#/definitions/Punting"
+				},
+				"receiving": {
+					"$ref": "#/definitions/Receiving"
+				},
+				"rushing": {
+					"$ref": "#/definitions/Rushing"
+				},
+				"sacks": {
+					"$ref": "#/definitions/Sacks"
+				},
+				"scoring": {
+					"$ref": "#/definitions/Scoring"
+				},
+				"tackles": {
+					"$ref": "#/definitions/Tackles"
+				},
+				"tacklesForLoss": {
+					"$ref": "#/definitions/TacklesForLoss"
+				},
+				"totalOffense": {
+					"$ref": "#/definitions/TotalOffense"
+				},
+				"yardsFromScrimmage": {
+					"$ref": "#/definitions/YardsFromScrimmage"
 				}
 			},
 			"required": [
 				"player_id",
+				"year_played",
 				"first_name",
 				"last_name",
 				"name",
+				"pos",
+				"num",
 				"year",
 				"height",
 				"height_inches",
 				"weight",
 				"hometown",
 				"last_school",
-				"team"
+				"team",
+				"allPurposeRunning",
+				"fumbleReturns",
+				"interceptions",
+				"kickoffReturn",
+				"kickoffs",
+				"miscDefense",
+				"passing",
+				"placeKicking",
+				"puntReturn",
+				"punting",
+				"receiving",
+				"rushing",
+				"sacks",
+				"scoring",
+				"tackles",
+				"tacklesForLoss",
+				"totalOffense",
+				"yardsFromScrimmage"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Team": {
+			"properties": {
+				"year": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"players": {
+					"items": {
+						"$ref": "#/definitions/Player"
+					},
+					"type": "array"
+				},
+				"conference": {
+					"$ref": "#/definitions/Conference"
+				}
+			},
+			"required": [
+				"year",
+				"name",
+				"players",
+				"conference"
 			],
 			"type": "object",
 			"additionalProperties": true
@@ -97,13 +179,1062 @@
 					"type": "string"
 				},
 				"teams": {
-					"$ref": "#/definitions/Team"
+					"items": {
+						"$ref": "#/definitions/Team"
+					},
+					"type": "array"
 				}
 			},
 			"required": [
 				"name",
 				"year",
 				"teams"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"AllPurposeRunning": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"IntRet": {
+					"type": "number",
+					"format": "double"
+				},
+				"KickRet": {
+					"type": "number",
+					"format": "double"
+				},
+				"Plays": {
+					"type": "number",
+					"format": "double"
+				},
+				"PuntRet": {
+					"type": "number",
+					"format": "double"
+				},
+				"Recv": {
+					"type": "number",
+					"format": "double"
+				},
+				"Rush": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"TotalYards": {
+					"type": "number",
+					"format": "double"
+				},
+				"YardsG": {
+					"type": "number",
+					"format": "double"
+				},
+				"YardsPlay": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"G",
+				"IntRet",
+				"KickRet",
+				"Plays",
+				"PuntRet",
+				"Recv",
+				"Rush",
+				"Split",
+				"TotalYards",
+				"YardsG",
+				"YardsPlay",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"FumbleReturns": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "number",
+					"format": "double"
+				},
+				"FumRet": {
+					"type": "number",
+					"format": "double"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"TD": {
+					"type": "number",
+					"format": "double"
+				},
+				"Yards": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"FumRet",
+				"G",
+				"Split",
+				"TD",
+				"Yards",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Interceptions": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Int": {
+					"type": "number",
+					"format": "double"
+				},
+				"IntG": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"TD": {
+					"type": "number",
+					"format": "double"
+				},
+				"Yards": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"G",
+				"Int",
+				"IntG",
+				"Split",
+				"TD",
+				"Yards",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"KickoffReturn": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"Avg": {
+					"type": "number",
+					"format": "double"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Ret": {
+					"type": "number",
+					"format": "double"
+				},
+				"RetG": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"TD": {
+					"type": "number",
+					"format": "double"
+				},
+				"Yards": {
+					"type": "number",
+					"format": "double"
+				},
+				"YardsG": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"Avg",
+				"G",
+				"Ret",
+				"RetG",
+				"Split",
+				"TD",
+				"Yards",
+				"YardsG",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Kickoffs": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"Avg": {
+					"type": "number",
+					"format": "double"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Kickoffs": {
+					"type": "number",
+					"format": "double"
+				},
+				"Onside": {
+					"type": "number",
+					"format": "double"
+				},
+				"OutOfBounds": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"Touchback": {
+					"type": "number",
+					"format": "double"
+				},
+				"Yards": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"Avg",
+				"G",
+				"Kickoffs",
+				"Onside",
+				"OutOfBounds",
+				"Split",
+				"Touchback",
+				"Yards",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"MiscDefense": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"FumblesForced": {
+					"type": "number",
+					"format": "double"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"KicksPuntsBlocked": {
+					"type": "number",
+					"format": "double"
+				},
+				"PassesBrokenUp": {
+					"type": "number",
+					"format": "double"
+				},
+				"QBHurries": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"FumblesForced",
+				"G",
+				"KicksPuntsBlocked",
+				"PassesBrokenUp",
+				"QBHurries",
+				"Split",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Passing": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"Att": {
+					"type": "number",
+					"format": "double"
+				},
+				"AttG": {
+					"type": "number",
+					"format": "double"
+				},
+				"Comp": {
+					"type": "number",
+					"format": "double"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Int": {
+					"type": "number",
+					"format": "double"
+				},
+				"Pct": {
+					"type": "number",
+					"format": "double"
+				},
+				"Rating": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"TD": {
+					"type": "number",
+					"format": "double"
+				},
+				"Yards": {
+					"type": "number",
+					"format": "double"
+				},
+				"YardsAtt": {
+					"type": "number",
+					"format": "double"
+				},
+				"YardsG": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"Att",
+				"AttG",
+				"Comp",
+				"G",
+				"Int",
+				"Pct",
+				"Rating",
+				"Split",
+				"TD",
+				"Yards",
+				"YardsAtt",
+				"YardsG",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"PlaceKicking": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"Att": {
+					"type": "number",
+					"format": "double"
+				},
+				"AttG": {
+					"type": "number",
+					"format": "double"
+				},
+				"ExtraPoint": {
+					"type": "number",
+					"format": "double"
+				},
+				"FieldGoal": {
+					"type": "number",
+					"format": "double"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Made": {
+					"type": "number",
+					"format": "double"
+				},
+				"MadeG": {
+					"type": "number",
+					"format": "double"
+				},
+				"Pct": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"Att",
+				"AttG",
+				"ExtraPoint",
+				"FieldGoal",
+				"G",
+				"Made",
+				"MadeG",
+				"Pct",
+				"Split",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"PuntReturn": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"Avg": {
+					"type": "number",
+					"format": "double"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Ret": {
+					"type": "number",
+					"format": "double"
+				},
+				"RetG": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"TD": {
+					"type": "number",
+					"format": "double"
+				},
+				"Yards": {
+					"type": "number",
+					"format": "double"
+				},
+				"YardsG": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"Avg",
+				"G",
+				"Ret",
+				"RetG",
+				"Split",
+				"TD",
+				"Yards",
+				"YardsG",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Punting": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"Avg": {
+					"type": "number",
+					"format": "double"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Punts": {
+					"type": "number",
+					"format": "double"
+				},
+				"PuntsG": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"Yards": {
+					"type": "number",
+					"format": "double"
+				},
+				"YardsG": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"Avg",
+				"G",
+				"Punts",
+				"PuntsG",
+				"Split",
+				"Yards",
+				"YardsG",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Receiving": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"Avg": {
+					"type": "number",
+					"format": "double"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Rec": {
+					"type": "number",
+					"format": "double"
+				},
+				"RecG": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"TD": {
+					"type": "number",
+					"format": "double"
+				},
+				"Yards": {
+					"type": "number",
+					"format": "double"
+				},
+				"YardsG": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"Avg",
+				"G",
+				"Rec",
+				"RecG",
+				"Split",
+				"TD",
+				"Yards",
+				"YardsG",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Rushing": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"Att": {
+					"type": "number",
+					"format": "double"
+				},
+				"AttG": {
+					"type": "number",
+					"format": "double"
+				},
+				"Avg": {
+					"type": "number",
+					"format": "double"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"TD": {
+					"type": "number",
+					"format": "double"
+				},
+				"Yards": {
+					"type": "number",
+					"format": "double"
+				},
+				"YardsG": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"Att",
+				"AttG",
+				"Avg",
+				"G",
+				"Split",
+				"TD",
+				"Yards",
+				"YardsG",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Sacks": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"SackYards": {
+					"type": "number",
+					"format": "double"
+				},
+				"Sacks": {
+					"type": "number",
+					"format": "double"
+				},
+				"SacksG": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"G",
+				"SackYards",
+				"Sacks",
+				"SacksG",
+				"Split",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Scoring": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"XP": {
+					"type": "number",
+					"format": "double"
+				},
+				"FG": {
+					"type": "number",
+					"format": "double"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Points": {
+					"type": "number",
+					"format": "double"
+				},
+				"PointsG": {
+					"type": "number",
+					"format": "double"
+				},
+				"Safety": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"TD": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"XP",
+				"FG",
+				"G",
+				"Points",
+				"PointsG",
+				"Safety",
+				"Split",
+				"TD",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Tackles": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"Assisted": {
+					"type": "number",
+					"format": "double"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Solo": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"Total": {
+					"type": "number",
+					"format": "double"
+				},
+				"TotalG": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"Assisted",
+				"G",
+				"Solo",
+				"Split",
+				"Total",
+				"TotalG",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"TacklesForLoss": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"TFL": {
+					"type": "number",
+					"format": "double"
+				},
+				"TFLYards": {
+					"type": "number",
+					"format": "double"
+				},
+				"TFLG": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"G",
+				"Split",
+				"TFL",
+				"TFLYards",
+				"TFLG",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"TotalOffense": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"PassYards": {
+					"type": "number",
+					"format": "double"
+				},
+				"Plays": {
+					"type": "number",
+					"format": "double"
+				},
+				"RushYards": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"TotalYards": {
+					"type": "number",
+					"format": "double"
+				},
+				"YardsG": {
+					"type": "number",
+					"format": "double"
+				},
+				"YardsPlay": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"G",
+				"PassYards",
+				"Plays",
+				"RushYards",
+				"Split",
+				"TotalYards",
+				"YardsG",
+				"YardsPlay",
+				"player"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"YardsFromScrimmage": {
+			"properties": {
+				"playerid": {
+					"type": "number",
+					"format": "double"
+				},
+				"yearplayed": {
+					"type": "string"
+				},
+				"G": {
+					"type": "number",
+					"format": "double"
+				},
+				"Plays": {
+					"type": "number",
+					"format": "double"
+				},
+				"RecvYards": {
+					"type": "number",
+					"format": "double"
+				},
+				"RushYards": {
+					"type": "number",
+					"format": "double"
+				},
+				"Split": {
+					"type": "string"
+				},
+				"TD": {
+					"type": "number",
+					"format": "double"
+				},
+				"TotalYards": {
+					"type": "number",
+					"format": "double"
+				},
+				"YardsG": {
+					"type": "number",
+					"format": "double"
+				},
+				"YardsPlay": {
+					"type": "number",
+					"format": "double"
+				},
+				"player": {
+					"$ref": "#/definitions/Player"
+				}
+			},
+			"required": [
+				"playerid",
+				"yearplayed",
+				"G",
+				"Plays",
+				"RecvYards",
+				"RushYards",
+				"Split",
+				"TD",
+				"TotalYards",
+				"YardsG",
+				"YardsPlay",
+				"player"
 			],
 			"type": "object",
 			"additionalProperties": true
@@ -115,6 +1246,461 @@
 		"description": "Awesome project developed with TypeORM."
 	},
 	"paths": {
+		"/players/conference": {
+			"get": {
+				"operationId": "GetPlayersByConference",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Player"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Players"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "conference",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "conference_year",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "sort",
+						"required": false,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/players/team": {
+			"get": {
+				"operationId": "GetPlayers",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"201": {
+						"description": "retrieved",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Player"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Players"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "school",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "year",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "sort",
+						"required": false,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/players/stats/{category}": {
+			"get": {
+				"operationId": "GetListOfPlayerStats",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Player"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Players"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "category",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"in": "query",
+						"name": "sort",
+						"required": false,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/players/stats/{player_id}/{player_year}/{category}": {
+			"get": {
+				"operationId": "GetCategoryByString",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Player"
+						}
+					}
+				},
+				"tags": [
+					"Players"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "player_id",
+						"required": true,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"in": "path",
+						"name": "player_year",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "path",
+						"name": "category",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/players/stats/representation/{player_id}/{player_year}": {
+			"get": {
+				"operationId": "Representation",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"additionalProperties": true,
+							"type": "object"
+						}
+					}
+				},
+				"description": "get the categories the player is represented in, statistically",
+				"tags": [
+					"Players"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "player_id",
+						"required": true,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"in": "path",
+						"name": "player_year",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/players/{team_year}/{team_name}": {
+			"post": {
+				"operationId": "UpdatePlayerToIncludePosAndNum",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Players"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "team_year",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "path",
+						"name": "team_name",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"height": {
+									"type": "string"
+								},
+								"height_inches": {
+									"additionalProperties": true,
+									"type": "object"
+								},
+								"hometown": {
+									"type": "string"
+								},
+								"last_school": {
+									"type": "string"
+								},
+								"pos": {
+									"type": "string"
+								},
+								"num": {
+									"type": "string"
+								}
+							},
+							"title": "UpdatePlayerToIncludePosAndNumBody",
+							"type": "object",
+							"required": [
+								"name",
+								"height",
+								"height_inches",
+								"hometown",
+								"last_school",
+								"pos",
+								"num"
+							]
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "AddPlayer",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"201": {
+						"description": "inserted"
+					}
+				},
+				"tags": [
+					"Players"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "team_name",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "path",
+						"name": "team_year",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"player_id": {
+									"type": "number",
+									"format": "double"
+								},
+								"year_played": {
+									"type": "number",
+									"format": "double"
+								},
+								"first_name": {
+									"type": "string"
+								},
+								"last_name": {
+									"type": "string"
+								},
+								"name": {
+									"type": "string"
+								},
+								"year": {
+									"type": "string"
+								},
+								"height": {
+									"type": "string"
+								},
+								"height_inches": {
+									"additionalProperties": true,
+									"type": "object"
+								},
+								"weight": {
+									"additionalProperties": true,
+									"type": "object"
+								},
+								"hometown": {
+									"type": "string"
+								},
+								"last_school": {
+									"type": "string"
+								}
+							},
+							"title": "AddPlayerBody",
+							"type": "object",
+							"required": [
+								"player_id",
+								"year_played",
+								"first_name",
+								"last_name",
+								"name",
+								"year",
+								"height",
+								"height_inches",
+								"weight",
+								"hometown",
+								"last_school"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/teams/{conference_year}/{conference_name}": {
+			"get": {
+				"operationId": "GetTeamsForConference",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"201": {
+						"description": "Fetched",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Conference"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Team"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "conference_year",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "path",
+						"name": "conference_name",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
 		"/conferences/{conference_year}": {
 			"get": {
 				"operationId": "GetAllConferences",
@@ -123,7 +1709,13 @@
 				],
 				"responses": {
 					"201": {
-						"description": "success"
+						"description": "success",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Conference"
+							},
+							"type": "array"
+						}
 					}
 				},
 				"summary": "Get all conferences for a given year",
@@ -269,6 +1861,1439 @@
 						"name": "conference_name",
 						"required": true,
 						"type": "string"
+					}
+				]
+			}
+		},
+		"/team/conferences/{team_year}": {
+			"put": {
+				"operationId": "AddTeamToConference",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"201": {
+						"description": "Added to conference"
+					}
+				},
+				"tags": [
+					"Team->Conference"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "team_year",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"conference_name": {
+									"type": "string"
+								},
+								"team_name": {
+									"type": "string"
+								}
+							},
+							"title": "AddTeamToConferenceBody",
+							"type": "object",
+							"required": [
+								"conference_name",
+								"team_name"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/allPurposeRunning": {
+			"put": {
+				"operationId": "AddAllPurposeRunning",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"IntRet": {
+									"type": "number",
+									"format": "double"
+								},
+								"KickRet": {
+									"type": "number",
+									"format": "double"
+								},
+								"Plays": {
+									"type": "number",
+									"format": "double"
+								},
+								"PuntRet": {
+									"type": "number",
+									"format": "double"
+								},
+								"Recv": {
+									"type": "number",
+									"format": "double"
+								},
+								"Rush": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"TotalYards": {
+									"type": "number",
+									"format": "double"
+								},
+								"YardsG": {
+									"type": "number",
+									"format": "double"
+								},
+								"YardsPlay": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddAllPurposeRunningBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"G",
+								"IntRet",
+								"KickRet",
+								"Plays",
+								"PuntRet",
+								"Recv",
+								"Rush",
+								"Split",
+								"TotalYards",
+								"YardsG",
+								"YardsPlay"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/fumbleReturns": {
+			"put": {
+				"operationId": "AddFumbleReturns",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "number",
+									"format": "double"
+								},
+								"FumRet": {
+									"type": "number",
+									"format": "double"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"TD": {
+									"type": "number",
+									"format": "double"
+								},
+								"Yards": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddFumbleReturnsBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"FumRet",
+								"G",
+								"Split",
+								"TD",
+								"Yards"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/interceptions": {
+			"put": {
+				"operationId": "AddInterception",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Int": {
+									"type": "number",
+									"format": "double"
+								},
+								"IntG": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"TD": {
+									"type": "number",
+									"format": "double"
+								},
+								"Yards": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddInterceptionBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"G",
+								"Int",
+								"IntG",
+								"Split",
+								"TD",
+								"Yards"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/kickoffReturn": {
+			"put": {
+				"operationId": "AddKickoffReturns",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"Avg": {
+									"type": "number",
+									"format": "double"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Ret": {
+									"type": "number",
+									"format": "double"
+								},
+								"RetG": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"TD": {
+									"type": "number",
+									"format": "double"
+								},
+								"Yards": {
+									"type": "number",
+									"format": "double"
+								},
+								"YardsG": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddKickoffReturnsBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"Avg",
+								"G",
+								"Ret",
+								"RetG",
+								"Split",
+								"TD",
+								"Yards",
+								"YardsG"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/kickoffs": {
+			"put": {
+				"operationId": "AddKickoffStats",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"Avg": {
+									"type": "number",
+									"format": "double"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Kickoffs": {
+									"type": "number",
+									"format": "double"
+								},
+								"Onside": {
+									"type": "number",
+									"format": "double"
+								},
+								"OutOfBounds": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"Touchback": {
+									"type": "number",
+									"format": "double"
+								},
+								"Yards": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddKickoffStatsBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"Avg",
+								"G",
+								"Kickoffs",
+								"Onside",
+								"OutOfBounds",
+								"Split",
+								"Touchback",
+								"Yards"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/miscDefense": {
+			"put": {
+				"operationId": "AddMistDefense",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"FumblesForced": {
+									"type": "number",
+									"format": "double"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"KicksPuntsBlocked": {
+									"type": "number",
+									"format": "double"
+								},
+								"PassesBrokenUp": {
+									"type": "number",
+									"format": "double"
+								},
+								"QBHurries": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								}
+							},
+							"title": "AddMistDefenseBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"FumblesForced",
+								"G",
+								"KicksPuntsBlocked",
+								"PassesBrokenUp",
+								"QBHurries",
+								"Split"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/passing": {
+			"put": {
+				"operationId": "AddPassing",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"Att": {
+									"type": "number",
+									"format": "double"
+								},
+								"AttG": {
+									"type": "number",
+									"format": "double"
+								},
+								"Comp": {
+									"type": "number",
+									"format": "double"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Int": {
+									"type": "number",
+									"format": "double"
+								},
+								"Pct": {
+									"type": "number",
+									"format": "double"
+								},
+								"Rating": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"TD": {
+									"type": "number",
+									"format": "double"
+								},
+								"Yards": {
+									"type": "number",
+									"format": "double"
+								},
+								"YardsAtt": {
+									"type": "number",
+									"format": "double"
+								},
+								"YardsG": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddPassingBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"Att",
+								"AttG",
+								"Comp",
+								"G",
+								"Int",
+								"Pct",
+								"Rating",
+								"Split",
+								"TD",
+								"Yards",
+								"YardsAtt",
+								"YardsG"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/placeKicking": {
+			"put": {
+				"operationId": "AddPlaceKicking",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"Att": {
+									"type": "number",
+									"format": "double"
+								},
+								"AttG": {
+									"type": "number",
+									"format": "double"
+								},
+								"ExtraPoint": {
+									"type": "number",
+									"format": "double"
+								},
+								"FieldGoal": {
+									"type": "number",
+									"format": "double"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Made": {
+									"type": "number",
+									"format": "double"
+								},
+								"MadeG": {
+									"type": "number",
+									"format": "double"
+								},
+								"Pct": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								}
+							},
+							"title": "AddPlaceKickingBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"Att",
+								"AttG",
+								"ExtraPoint",
+								"FieldGoal",
+								"G",
+								"Made",
+								"MadeG",
+								"Pct",
+								"Split"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/puntReturn": {
+			"put": {
+				"operationId": "AddPuntReturns",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"Avg": {
+									"type": "number",
+									"format": "double"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Ret": {
+									"type": "number",
+									"format": "double"
+								},
+								"RetG": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"TD": {
+									"type": "number",
+									"format": "double"
+								},
+								"Yards": {
+									"type": "number",
+									"format": "double"
+								},
+								"YardsG": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddPuntReturnsBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"Avg",
+								"G",
+								"Ret",
+								"RetG",
+								"Split",
+								"TD",
+								"Yards",
+								"YardsG"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/punting": {
+			"put": {
+				"operationId": "AddPunting",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"Avg": {
+									"type": "number",
+									"format": "double"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Punts": {
+									"type": "number",
+									"format": "double"
+								},
+								"PuntsG": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"Yards": {
+									"type": "number",
+									"format": "double"
+								},
+								"YardsG": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddPuntingBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"Avg",
+								"G",
+								"Punts",
+								"PuntsG",
+								"Split",
+								"Yards",
+								"YardsG"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/receiving": {
+			"put": {
+				"operationId": "AddReceiving",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"Avg": {
+									"type": "number",
+									"format": "double"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Rec": {
+									"type": "number",
+									"format": "double"
+								},
+								"RecG": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"TD": {
+									"type": "number",
+									"format": "double"
+								},
+								"Yards": {
+									"type": "number",
+									"format": "double"
+								},
+								"YardsG": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddReceivingBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"Avg",
+								"G",
+								"Rec",
+								"RecG",
+								"Split",
+								"TD",
+								"Yards",
+								"YardsG"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/rushing": {
+			"put": {
+				"operationId": "AddRushing",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"Att": {
+									"type": "number",
+									"format": "double"
+								},
+								"AttG": {
+									"type": "number",
+									"format": "double"
+								},
+								"Avg": {
+									"type": "number",
+									"format": "double"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"TD": {
+									"type": "number",
+									"format": "double"
+								},
+								"Yards": {
+									"type": "number",
+									"format": "double"
+								},
+								"YardsG": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddRushingBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"Att",
+								"AttG",
+								"Avg",
+								"G",
+								"Split",
+								"TD",
+								"Yards",
+								"YardsG"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/sacks": {
+			"put": {
+				"operationId": "AddSacks",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"SackYards": {
+									"type": "number",
+									"format": "double"
+								},
+								"Sacks": {
+									"type": "number",
+									"format": "double"
+								},
+								"SacksG": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								}
+							},
+							"title": "AddSacksBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"G",
+								"SackYards",
+								"Sacks",
+								"SacksG",
+								"Split"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/scoring": {
+			"put": {
+				"operationId": "AddScoring",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"XP": {
+									"type": "number",
+									"format": "double"
+								},
+								"FG": {
+									"type": "number",
+									"format": "double"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Points": {
+									"type": "number",
+									"format": "double"
+								},
+								"PointsG": {
+									"type": "number",
+									"format": "double"
+								},
+								"Safety": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"TD": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddScoringBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"XP",
+								"FG",
+								"G",
+								"Points",
+								"PointsG",
+								"Safety",
+								"Split",
+								"TD"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/tacklesForLoss": {
+			"put": {
+				"operationId": "AddTacklesForLoss",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"TFL": {
+									"type": "number",
+									"format": "double"
+								},
+								"TFLYards": {
+									"type": "number",
+									"format": "double"
+								},
+								"TFLG": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddTacklesForLossBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"G",
+								"Split",
+								"TFL",
+								"TFLYards",
+								"TFLG"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/tackles": {
+			"put": {
+				"operationId": "AddTackles",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"Assisted": {
+									"type": "number",
+									"format": "double"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Solo": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"Total": {
+									"type": "number",
+									"format": "double"
+								},
+								"TotalG": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddTacklesBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"Assisted",
+								"G",
+								"Solo",
+								"Split",
+								"Total",
+								"TotalG"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/totalOffense": {
+			"put": {
+				"operationId": "AddTotalOffense",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"PassYards": {
+									"type": "number",
+									"format": "double"
+								},
+								"Plays": {
+									"type": "number",
+									"format": "double"
+								},
+								"RushYards": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"TotalYards": {
+									"type": "number",
+									"format": "double"
+								},
+								"YardsG": {
+									"type": "number",
+									"format": "double"
+								},
+								"YardsPlay": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddTotalOffenseBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"G",
+								"PassYards",
+								"Plays",
+								"RushYards",
+								"Split",
+								"TotalYards",
+								"YardsG",
+								"YardsPlay"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/statistics/yardsFromScrimmage": {
+			"put": {
+				"operationId": "AddYardsFromScrimmage",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"schema": {
+							"properties": {
+								"playerid": {
+									"type": "number",
+									"format": "double"
+								},
+								"yearplayed": {
+									"type": "string"
+								},
+								"G": {
+									"type": "number",
+									"format": "double"
+								},
+								"Plays": {
+									"type": "number",
+									"format": "double"
+								},
+								"RecvYards": {
+									"type": "number",
+									"format": "double"
+								},
+								"RushYards": {
+									"type": "number",
+									"format": "double"
+								},
+								"Split": {
+									"type": "string"
+								},
+								"TD": {
+									"type": "number",
+									"format": "double"
+								},
+								"TotalYards": {
+									"type": "number",
+									"format": "double"
+								},
+								"YardsG": {
+									"type": "number",
+									"format": "double"
+								},
+								"YardsPlay": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"title": "AddYardsFromScrimmageBody",
+							"type": "object",
+							"required": [
+								"playerid",
+								"yearplayed",
+								"G",
+								"Plays",
+								"RecvYards",
+								"RushYards",
+								"Split",
+								"TD",
+								"TotalYards",
+								"YardsG",
+								"YardsPlay"
+							]
+						}
 					}
 				]
 			}
