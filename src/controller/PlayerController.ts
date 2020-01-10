@@ -1,7 +1,6 @@
 import {getRepository, SimpleConsoleLogger, getConnection} from "typeorm";
 import {NextFunction, Response} from "express";
-import {Player} from "../entity/Player";
-import { paginateAndApplyFilters } from "../utils/paginationAndFilterBuilder";
+import {Player, PaginatedPlayer} from "../entity/Player";
 import { QueryErrorFormatter } from "../utils/queryErrorFormatter";
 import { SuccessResponse, Get, Route, Tags, BodyProp, Put, Request, Query, Controller, Post, Body } from "tsoa";
 import { Team } from "../entity/Team";
@@ -10,6 +9,7 @@ import { isUndefined } from "util";
 import { Conference } from "../entity/Conference";
 import { QueryExpressionMap } from "typeorm/query-builder/QueryExpressionMap";
 import { Representation } from "./models/statRepresentation";
+import { paginateAndApplyFilters, paginateWithLimitAndOffset, applyFilters } from "../utils/paginationAndFilterBuilder";
 
 @Route('players')
 @Tags('Players')
@@ -18,6 +18,7 @@ export class PlayerController extends Controller{
 
     private playerRepo = getRepository(Player);
     private teamRepo  = getRepository(Team);
+    private conferenceRepo = getRepository(Conference); 
     private logger: SimpleConsoleLogger = new SimpleConsoleLogger();
     private playerCategories = {
         allPurposeRunning: 'allPurposeRunning',
@@ -41,47 +42,100 @@ export class PlayerController extends Controller{
     };
     
 
+    @Get("")
+    async getPlayers(
+    @Query('team_filter') teamFilter?: string[],
+    @Query('player_filter') playerFilter?: string[],
+    @Query('limit') limit?: number,
+    @Query('offset') offset?: number,
+    @Query('sort') sort?: string){
+        var query = this.playerRepo.createQueryBuilder('player')
+        .innerJoinAndSelect('player.team', 'team');
+        console.log('hit on base get');
+        
+        console.log(teamFilter);
+        console.log(playerFilter);
+        
+        
+        
+        paginateWithLimitAndOffset(query, limit, offset); 
+        applyFilters('team', query, teamFilter, true); 
+        applyFilters('player', query, playerFilter, true); 
+        return query.getManyAndCount()
+        .then(result=>{
+            return {
+                count: result[1],
+                players: result[0]
+            } as PaginatedPlayer
+        })
+
+        
+    }
+
+    @Get("/player/{player_id}")
+    async getPlayerYears(player_id: string){
+        return this.playerRepo.createQueryBuilder('player')
+        .where("player.player_id=:id", {id: player_id})
+        .getManyAndCount()
+        .then(result=>{
+            let temp = {
+                count: result[1], 
+                players: result[0]
+            } as PaginatedPlayer
+
+            console.log(temp);
+
+            return temp; 
+            
+        })
+    }
+
     @Get("/conference")
     async getPlayersByConference(
     @Request() request: express.Request,
     @Query('conference') conference: string, 
     @Query('conference_year') conference_year: string,
-    @Query('filter') filter?: string,
-    @Query('limit') limit?: string,
-    @Query('offset') offset?: string,
+    @Query('team_name') team_name?: string,
+    @Query('filter') filter?: string[],
+    @Query('limit') limit?: number,
+    @Query('offset') offset?: number,
     @Query('sort') sort?: string
     ){
-        var query = this.playerRepo.createQueryBuilder('player'); 
-        query.select(['player']); 
-
-        if(isUndefined(limit) || Number(limit) > 500){
-            limit = '500';
-        }
-        if(isUndefined(offset)){
-            offset = '0'; 
+        if(isUndefined(conference) && isUndefined(conference_year)){
+            this.setHeader('status', '400');
+            return {}; 
         }
 
-        query.innerJoin("player.team", "team"); 
-        query.innerJoin("team.conference", "conference"); 
+        var query = this.playerRepo.createQueryBuilder('player')
+        .innerJoinAndSelect('player.team', 'team')
+        .innerJoin('team.conference', 'conference')
+        .where('conference.name=:name', {name: conference})
+        .andWhere('conference.year=:year', {year: conference_year})
 
-        query.limit(Number(limit)); 
-        query.offset(Number(offset)); 
-
-        query.where("conference.name = :conference_name", {conference_name:conference}); 
-
-        if(!isUndefined(conference_year)){
-            query.where("conference.year=:year", {year:conference_year}); 
+        if (!isUndefined(team_name)){
+            query.andWhere(`team.name like '\%${team_name}\%'`)
         }
 
-        query.addSelect(['team.name', 'conference.name', 'conference.year']); 
 
-        return query.getMany(); 
+        
+        paginateAndApplyFilters('player',query, filter, limit, offset, sort, true); 
+
+        return query.getManyAndCount()
+        .then(result=>{
+            var players: PaginatedPlayer; 
+            
+            players = {
+                players: result[0], 
+                count: result[1]
+            }
+            return players; 
+        }); 
 
     }
     
     @SuccessResponse('201', 'retrieved')
     @Get("/team")
-    async getPlayers(
+    async getPlayersByTeam(
     @Request() request: express.Request,
     @Query('school') school:string, 
     @Query('year') school_year?:string,
@@ -90,39 +144,28 @@ export class PlayerController extends Controller{
     @Query('offset') offset?: string,
     @Query('sort') sort?: string
     ){
-        //set the limit to 500
-        console.log(filter, limit, offset, sort, school);
+        var query = this.playerRepo.createQueryBuilder('player')
+        .limit(500)
+        .offset(0)
         
-        if(isUndefined(limit) || Number(limit) > 500){
-            limit = '500';
-        }
-        if(isUndefined(offset)){
-            offset = '0'; 
-        }
-        if(isUndefined(school)){
-            console.log("undefined school");
-        }
         
-        var query = this.playerRepo.createQueryBuilder('player').offset(Number(offset)).limit(Number(limit));
-        query.select(['player']);
-        if(!isUndefined(school)){
-            query.addSelect(['team.name']);
-            query.innerJoin("player.team", "team");
-            query.where("team.name = :name", {name:school});
-            if(!isUndefined(school_year)){
-                query.addSelect(['team.year']);
-                query.andWhere("team.year = :year", {year:school_year});
-            }  
-        }
-        else if(!isUndefined(school_year)){
-            query.addSelect(['team.year'])
-            query.innerJoin("player.team", "team");
-            query.where("team.year = :year", {year:school_year});
-        }
+        query.innerJoin('player.team', 'team')
+        .where('team.name=:name', {name: school})
+            
         
-        this.setHeader("count", String(await query.getCount()))
-        return query.getMany()
-    
+
+        if (!isUndefined(school_year)){
+            query.andWhere('team.year=:year', {year: school_year})
+        }
+
+        return query.getManyAndCount().then(result=>{
+            var players: PaginatedPlayer; 
+            players = {
+                players: result[0],
+                count: result[1]
+            }
+            return players; 
+        })
         
         
     }
@@ -179,36 +222,32 @@ export class PlayerController extends Controller{
         .getOne();
 
 
-        
-
-
     }
 
-    /**
-     * get the categories the player is represented in, statistically 
-    */
-    @Get("/stats/representation/{player_id}/{player_year}")
-    async representation(player_id:number, player_year:string){
+    @Get("/stats/categories/representation/{player_id}/{player_year}")
+    async getCategories(player_id: number, player_year: string){
         var query = this.playerRepo.createQueryBuilder('player')
-        .where('player_id = :id', {id:player_id})
-        .andWhere('year_played=:year', {year: player_year})
-        //query.innerJoinAndSelect(`player.${this.playerCategories[0]}`, this.playerCategories[0])
-        Object.keys(this.playerCategories).forEach(value=>{
-            query.leftJoinAndSelect(`player.${value}`, value)
-
+        .where('player.player_id=:id', {id: player_id})
+        .andWhere('player.year_played=:year', {year: player_year});
+        
+        Object.keys(this.playerCategories).forEach(result=>{
+            query.leftJoinAndSelect(`player.${result}`, result);
+            
         })
         
-        var result = await query.getOne();
-        var temp_obj: any = {};
-        for(const key in result){
-            if (Object.keys(this.playerCategories).includes(key)){
-                temp_obj[key] = !(result[key] == null); 
-                
-            }
-            
-        }
-        
-        return temp_obj;
+        return query.getOne()
+        .then(result=>{
+            var temp: any = {}; 
+            Object.keys(result).forEach(key=>{
+                if (Object.keys(this.playerCategories).includes(key)){
+                    temp[key] = result[key] != null
+                }
+            })
+            temp['player_id'] = result.player_id; 
+            temp['year_played'] = result.year_played; 
+
+            return temp as Representation; 
+        })
         
     }
 
@@ -248,10 +287,6 @@ export class PlayerController extends Controller{
                     i.pos = pos; 
                     i.num = num; 
                     this.playerRepo.save(i)
-                    .then(()=>{
-                        console.log(i.player_id, "saved");
-                        
-                    }); 
                 })
                 
             })

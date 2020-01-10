@@ -373,6 +373,56 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PaginatedPlayer": {
+        "properties": {
+            "players": { "dataType": "array", "array": { "ref": "Player" }, "required": true },
+            "count": { "dataType": "double", "required": true },
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Representation": {
+        "properties": {
+            "player_id": { "dataType": "double", "required": true },
+            "year_played": { "dataType": "string", "required": true },
+            "allPurposeRunning": { "dataType": "boolean", "required": true },
+            "fumbleReturns": { "dataType": "boolean", "required": true },
+            "interceptions": { "dataType": "boolean", "required": true },
+            "kickoffReturn": { "dataType": "boolean", "required": true },
+            "kickoffs": { "dataType": "boolean", "required": true },
+            "miscDefense": { "dataType": "boolean", "required": true },
+            "passing": { "dataType": "boolean", "required": true },
+            "placeKicking": { "dataType": "boolean", "required": true },
+            "puntReturn": { "dataType": "boolean", "required": true },
+            "punting": { "dataType": "boolean", "required": true },
+            "receiving": { "dataType": "boolean", "required": true },
+            "rushing": { "dataType": "boolean", "required": true },
+            "sacks": { "dataType": "boolean", "required": true },
+            "scoring": { "dataType": "boolean", "required": true },
+            "tackles": { "dataType": "boolean", "required": true },
+            "tacklesForLoss": { "dataType": "boolean", "required": true },
+            "totalOffense": { "dataType": "boolean", "required": true },
+            "yardsFromScrimmage": { "dataType": "boolean", "required": true },
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PaginatedTeam": {
+        "properties": {
+            "teams": { "dataType": "array", "array": { "ref": "Team" }, "required": true },
+            "count": { "dataType": "double", "required": true },
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PaginatedConference": {
+        "properties": {
+            "conferences": { "dataType": "array", "array": { "ref": "Conference" }, "required": true },
+            "count": { "dataType": "double", "required": true },
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -383,15 +433,64 @@ export function RegisterRoutes(app: express.Express) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
+    app.get('/players',
+        function(request: any, response: any, next: any) {
+            const args = {
+                teamFilter: { "in": "query", "name": "team_filter", "dataType": "array", "array": { "dataType": "string" } },
+                playerFilter: { "in": "query", "name": "player_filter", "dataType": "array", "array": { "dataType": "string" } },
+                limit: { "in": "query", "name": "limit", "dataType": "double" },
+                offset: { "in": "query", "name": "offset", "dataType": "double" },
+                sort: { "in": "query", "name": "sort", "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new PlayerController();
+
+
+            const promise = controller.getPlayers.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/players/player/:player_id',
+        function(request: any, response: any, next: any) {
+            const args = {
+                player_id: { "in": "path", "name": "player_id", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new PlayerController();
+
+
+            const promise = controller.getPlayerYears.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/players/conference',
         function(request: any, response: any, next: any) {
             const args = {
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 conference: { "in": "query", "name": "conference", "required": true, "dataType": "string" },
                 conference_year: { "in": "query", "name": "conference_year", "required": true, "dataType": "string" },
-                filter: { "in": "query", "name": "filter", "dataType": "string" },
-                limit: { "in": "query", "name": "limit", "dataType": "string" },
-                offset: { "in": "query", "name": "offset", "dataType": "string" },
+                team_name: { "in": "query", "name": "team_name", "dataType": "string" },
+                filter: { "in": "query", "name": "filter", "dataType": "array", "array": { "dataType": "string" } },
+                limit: { "in": "query", "name": "limit", "dataType": "double" },
+                offset: { "in": "query", "name": "offset", "dataType": "double" },
                 sort: { "in": "query", "name": "sort", "dataType": "string" },
             };
 
@@ -435,7 +534,7 @@ export function RegisterRoutes(app: express.Express) {
             const controller = new PlayerController();
 
 
-            const promise = controller.getPlayers.apply(controller, validatedArgs as any);
+            const promise = controller.getPlayersByTeam.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -489,7 +588,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/players/stats/representation/:player_id/:player_year',
+    app.get('/players/stats/categories/representation/:player_id/:player_year',
         function(request: any, response: any, next: any) {
             const args = {
                 player_id: { "in": "path", "name": "player_id", "required": true, "dataType": "double" },
@@ -508,7 +607,7 @@ export function RegisterRoutes(app: express.Express) {
             const controller = new PlayerController();
 
 
-            const promise = controller.representation.apply(controller, validatedArgs as any);
+            const promise = controller.getCategories.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -582,6 +681,10 @@ export function RegisterRoutes(app: express.Express) {
             const args = {
                 conference_year: { "in": "path", "name": "conference_year", "required": true, "dataType": "string" },
                 conference_name: { "in": "path", "name": "conference_name", "required": true, "dataType": "string" },
+                filter: { "in": "query", "name": "filter", "dataType": "array", "array": { "dataType": "string" } },
+                limit: { "in": "query", "name": "limit", "dataType": "double" },
+                offset: { "in": "query", "name": "offset", "dataType": "double" },
+                sort: { "in": "query", "name": "sort", "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -600,14 +703,40 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/teams/:year',
+        function(request: any, response: any, next: any) {
+            const args = {
+                year: { "in": "path", "name": "year", "required": true, "dataType": "string" },
+                filter: { "in": "query", "name": "filter", "dataType": "array", "array": { "dataType": "string" } },
+                limit: { "in": "query", "name": "limit", "dataType": "double" },
+                offset: { "in": "query", "name": "offset", "dataType": "double" },
+                sort: { "in": "query", "name": "sort", "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new TeamController();
+
+
+            const promise = controller.getTeamsForYear.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/conferences/:conference_year',
         function(request: any, response: any, next: any) {
             const args = {
                 conference_year: { "in": "path", "name": "conference_year", "required": true, "dataType": "string" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-                filter: { "in": "query", "name": "filter", "dataType": "string" },
-                limit: { "in": "query", "name": "limit", "dataType": "string" },
-                offset: { "in": "query", "name": "offset", "dataType": "string" },
+                filter: { "in": "query", "name": "filter", "dataType": "array", "array": { "dataType": "string" } },
+                limit: { "in": "query", "name": "limit", "dataType": "double" },
+                offset: { "in": "query", "name": "offset", "dataType": "double" },
                 sort: { "in": "query", "name": "sort", "dataType": "string" },
             };
 

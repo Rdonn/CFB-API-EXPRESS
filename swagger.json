@@ -1238,6 +1238,155 @@
 			],
 			"type": "object",
 			"additionalProperties": true
+		},
+		"PaginatedPlayer": {
+			"properties": {
+				"players": {
+					"items": {
+						"$ref": "#/definitions/Player"
+					},
+					"type": "array"
+				},
+				"count": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"required": [
+				"players",
+				"count"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"Representation": {
+			"properties": {
+				"player_id": {
+					"type": "number",
+					"format": "double"
+				},
+				"year_played": {
+					"type": "string"
+				},
+				"allPurposeRunning": {
+					"type": "boolean"
+				},
+				"fumbleReturns": {
+					"type": "boolean"
+				},
+				"interceptions": {
+					"type": "boolean"
+				},
+				"kickoffReturn": {
+					"type": "boolean"
+				},
+				"kickoffs": {
+					"type": "boolean"
+				},
+				"miscDefense": {
+					"type": "boolean"
+				},
+				"passing": {
+					"type": "boolean"
+				},
+				"placeKicking": {
+					"type": "boolean"
+				},
+				"puntReturn": {
+					"type": "boolean"
+				},
+				"punting": {
+					"type": "boolean"
+				},
+				"receiving": {
+					"type": "boolean"
+				},
+				"rushing": {
+					"type": "boolean"
+				},
+				"sacks": {
+					"type": "boolean"
+				},
+				"scoring": {
+					"type": "boolean"
+				},
+				"tackles": {
+					"type": "boolean"
+				},
+				"tacklesForLoss": {
+					"type": "boolean"
+				},
+				"totalOffense": {
+					"type": "boolean"
+				},
+				"yardsFromScrimmage": {
+					"type": "boolean"
+				}
+			},
+			"required": [
+				"player_id",
+				"year_played",
+				"allPurposeRunning",
+				"fumbleReturns",
+				"interceptions",
+				"kickoffReturn",
+				"kickoffs",
+				"miscDefense",
+				"passing",
+				"placeKicking",
+				"puntReturn",
+				"punting",
+				"receiving",
+				"rushing",
+				"sacks",
+				"scoring",
+				"tackles",
+				"tacklesForLoss",
+				"totalOffense",
+				"yardsFromScrimmage"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"PaginatedTeam": {
+			"properties": {
+				"teams": {
+					"items": {
+						"$ref": "#/definitions/Team"
+					},
+					"type": "array"
+				},
+				"count": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"required": [
+				"teams",
+				"count"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"PaginatedConference": {
+			"properties": {
+				"conferences": {
+					"items": {
+						"$ref": "#/definitions/Conference"
+					},
+					"type": "array"
+				},
+				"count": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"required": [
+				"conferences",
+				"count"
+			],
+			"type": "object",
+			"additionalProperties": true
 		}
 	},
 	"info": {
@@ -1246,6 +1395,96 @@
 		"description": "Awesome project developed with TypeORM."
 	},
 	"paths": {
+		"/players": {
+			"get": {
+				"operationId": "GetPlayers",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/PaginatedPlayer"
+						}
+					}
+				},
+				"tags": [
+					"Players"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "team_filter",
+						"required": false,
+						"collectionFormat": "multi",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "player_filter",
+						"required": false,
+						"collectionFormat": "multi",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"in": "query",
+						"name": "sort",
+						"required": false,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/players/player/{player_id}": {
+			"get": {
+				"operationId": "GetPlayerYears",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/PaginatedPlayer"
+						}
+					}
+				},
+				"tags": [
+					"Players"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "player_id",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
 		"/players/conference": {
 			"get": {
 				"operationId": "GetPlayersByConference",
@@ -1256,10 +1495,8 @@
 					"200": {
 						"description": "Ok",
 						"schema": {
-							"items": {
-								"$ref": "#/definitions/Player"
-							},
-							"type": "array"
+							"properties": {},
+							"type": "object"
 						}
 					}
 				},
@@ -1282,21 +1519,33 @@
 					},
 					{
 						"in": "query",
-						"name": "filter",
+						"name": "team_name",
 						"required": false,
 						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"collectionFormat": "multi",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
 					},
 					{
 						"in": "query",
 						"name": "limit",
 						"required": false,
-						"type": "string"
+						"format": "double",
+						"type": "number"
 					},
 					{
 						"in": "query",
 						"name": "offset",
 						"required": false,
-						"type": "string"
+						"format": "double",
+						"type": "number"
 					},
 					{
 						"in": "query",
@@ -1309,7 +1558,7 @@
 		},
 		"/players/team": {
 			"get": {
-				"operationId": "GetPlayers",
+				"operationId": "GetPlayersByTeam",
 				"produces": [
 					"application/json"
 				],
@@ -1317,10 +1566,7 @@
 					"201": {
 						"description": "retrieved",
 						"schema": {
-							"items": {
-								"$ref": "#/definitions/Player"
-							},
-							"type": "array"
+							"$ref": "#/definitions/PaginatedPlayer"
 						}
 					}
 				},
@@ -1466,9 +1712,9 @@
 				]
 			}
 		},
-		"/players/stats/representation/{player_id}/{player_year}": {
+		"/players/stats/categories/representation/{player_id}/{player_year}": {
 			"get": {
-				"operationId": "Representation",
+				"operationId": "GetCategories",
 				"produces": [
 					"application/json"
 				],
@@ -1476,12 +1722,10 @@
 					"200": {
 						"description": "Ok",
 						"schema": {
-							"additionalProperties": true,
-							"type": "object"
+							"$ref": "#/definitions/Representation"
 						}
 					}
 				},
-				"description": "get the categories the player is represented in, statistically",
 				"tags": [
 					"Players"
 				],
@@ -1674,10 +1918,7 @@
 					"201": {
 						"description": "Fetched",
 						"schema": {
-							"items": {
-								"$ref": "#/definitions/Conference"
-							},
-							"type": "array"
+							"$ref": "#/definitions/PaginatedTeam"
 						}
 					}
 				},
@@ -1697,6 +1938,94 @@
 						"name": "conference_name",
 						"required": true,
 						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"collectionFormat": "multi",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"in": "query",
+						"name": "sort",
+						"required": false,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/teams/{year}": {
+			"get": {
+				"operationId": "GetTeamsForYear",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/PaginatedTeam"
+						}
+					}
+				},
+				"tags": [
+					"Team"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "year",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"collectionFormat": "multi",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"in": "query",
+						"name": "sort",
+						"required": false,
+						"type": "string"
 					}
 				]
 			}
@@ -1711,10 +2040,7 @@
 					"201": {
 						"description": "success",
 						"schema": {
-							"items": {
-								"$ref": "#/definitions/Conference"
-							},
-							"type": "array"
+							"$ref": "#/definitions/PaginatedConference"
 						}
 					}
 				},
@@ -1735,20 +2061,26 @@
 						"in": "query",
 						"name": "filter",
 						"required": false,
-						"type": "string"
+						"collectionFormat": "multi",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
 					},
 					{
 						"description": "pagination value",
 						"in": "query",
 						"name": "limit",
 						"required": false,
-						"type": "string"
+						"format": "double",
+						"type": "number"
 					},
 					{
 						"in": "query",
 						"name": "offset",
 						"required": false,
-						"type": "string"
+						"format": "double",
+						"type": "number"
 					},
 					{
 						"in": "query",

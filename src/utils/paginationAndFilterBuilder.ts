@@ -1,4 +1,4 @@
-import { getRepository, Repository, QueryBuilder, SelectQueryBuilder, Like, getConnection, Brackets } from "typeorm";
+import {getRepository, Repository, QueryBuilder, SelectQueryBuilder, Like, getConnection, Brackets } from "typeorm";
 import {NextFunction, Request, Response} from "express";
 import { Query } from "typeorm/driver/Query";
 import { isUndefined, isArray } from "util";
@@ -8,103 +8,57 @@ import { Player } from "../entity/Player";
 //we need to cache metadata for pagination/filter builders
 
 
+export function paginateAndApplyFilters(table: string, query: SelectQueryBuilder<any>, filter: string[], limit: number, offset: number, sort: string, hasWhere: boolean) {
+    query.limit(limit < 500 ? limit : 500)
+        .offset(isUndefined(offset) ? 0 : offset)
 
-export function paginateAndApplyFilters(request: Request, 
-            query: SelectQueryBuilder<any>,
-            type: string){
-    paginationUtils.initializeMeta(request, type); 
-    paginationUtils.sortingFilter(request, query, type); 
-    paginationUtils.filterBuilder(request, query, type); 
-    paginationUtils.paginationBuilder(request, query, type); 
+    if (!isUndefined(filter)) {
+        if (filter.length >= 1) {
+            var to_filer_on = filter[0].split("|");
+            if (to_filer_on.length == 2) {
+                hasWhere ? query.andWhere(`${table}.${to_filer_on[0]} like '\%${to_filer_on[1]}\%'`) : query.where(`${table}.${to_filer_on[0]} like '\%${to_filer_on[1]}\%'`);
+                filter.shift(); 
+            }
+            
+            if(filter.length >= 1){
+                filter.forEach(value=>{
+                    var to_filer_on = value.split("|"); 
+                    if(to_filer_on.length == 2){
+                        query.andWhere(`${table}.${to_filer_on[0]} like '\%${to_filer_on[1]}\%'`); 
+
+                    }
+                })
+            }
+        }
+        
+    }
+
 }
 
-export class paginationUtils {
-    public static cachedMetadata: Map<string, Set<string>> = new Map(); 
-    
-    public static initializeMeta(request: Request, type: string){
-        if (isUndefined(this.cachedMetadata.get(type))){
+export function applyFilters(table: string, query: SelectQueryBuilder<any>, filter: string[], hasWhere: boolean){
+    if (!isUndefined(filter)) {
+        if (filter.length >= 1) {
+            var to_filer_on = filter[0].split("|");
+            if (to_filer_on.length == 2) {
+                hasWhere ? query.andWhere(`${table}.${to_filer_on[0]} like '\%${to_filer_on[1]}\%'`) : query.where(`${table}.${to_filer_on[0]} like '\%${to_filer_on[1]}\%'`);
+                filter.shift(); 
+            }
             
-            this.cachedMetadata.set(type, new Set<string>())
-            getConnection().getMetadata(type).columns.forEach(value=>{
-                this.cachedMetadata.get(type).add(value.databaseName); 
-            })
+            if(filter.length >= 1){
+                filter.forEach(value=>{
+                    var to_filer_on = value.split("|"); 
+                    if(to_filer_on.length == 2){
+                        query.andWhere(`${table}.${to_filer_on[0]} like '\%${to_filer_on[1]}\%'`); 
 
+                    }
+                })
+            }
         }
-    }
-
-    public static sortingFilter(request: Request, 
-                                query: SelectQueryBuilder<any>,
-                                type: string){
         
-        if (!isUndefined(request.query.sort)) {
-            if (isArray(request.query.sort)) {
-                return
-            }
-            const sortArg = decodeURI(<string>request.query.sort).split('|');
-            if (sortArg.length == 2) {
-                const sort = {
-                    sortName: sortArg[0],
-                    sortValue: sortArg[1]
-                }
-                if (!isUndefined(this.cachedMetadata.has(type)) && 
-                    this.cachedMetadata.get(type).has(sort.sortName)){
-                        query.orderBy(`'${type}'.'${sort.sortName}'='${sort.sortValue}'`);
-                    }
-                
-
-            }
-        }
     }
+}
 
-    public static filterBuilder(request: Request,
-        query: SelectQueryBuilder<any>,
-        type: string) {
-    
-        
-        if (!isUndefined(request.query.filter)) {
-            
-            
-            if (!isArray(request.query.filter)){
-                request.query.filter = [request.query.filter] as Array<any>; 
-            }
-             
-            var builder = new Array<Object>(); 
-            request.query.filter.forEach((value:any, index: number)=>{
-                const filterArg = decodeURI(<string>value).split('|');
-                if (filterArg.length == 2) {
-                    const filter = {
-                        filterName: filterArg[0],
-                        filterValue: filterArg[1]
-                    }
-                    if (!isUndefined(this.cachedMetadata.has(type)) &&
-                        this.cachedMetadata.get(type).has(filter.filterName)) {
-                        if (index == 0) {
-                            query.where(`'${type}'.'${filter.filterName}' LIKE '%${filter.filterValue}%'`)
-                        }
-                        else {
-                            query.andWhere(`'${type}'.'${filter.filterName}' LIKE '%${filter.filterValue}%'`)
-                        }
-                    }
-
-                }
-
-            })
-        }
-    }
-
-    public static paginationBuilder(request: Request,
-        query: SelectQueryBuilder<any>,
-        type: string) {
-        if (isArray(request.query.offset) || isArray(request.query.offset)){
-            return
-        }
-
-        if (request.query.offset != undefined) {
-            query.skip(request.query.offset);
-        }
-
-        if (request.query.limit != undefined) {
-            query.limit(request.query.limit);
-        }
-    }
+export function paginateWithLimitAndOffset(query: SelectQueryBuilder<any>, limit, offset){
+    query.limit(limit < 500 ? limit : 500)
+         .offset(isUndefined(offset) ? 0 : offset)
 }

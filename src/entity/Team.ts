@@ -17,3 +17,8 @@ export class Team{
     @ManyToOne(type=>Conference, conferece=>conferece.teams)
     conference: Conference;
 }
+
+export interface PaginatedTeam{
+    teams: Team[];
+    count: number;
+}

@@ -1,12 +1,12 @@
 import { getRepository } from "typeorm";
-import { Conference } from "../entity/Conference";
+import { Conference, PaginatedConference } from "../entity/Conference";
 import { QueryErrorFormatter } from "../utils/queryErrorFormatter";
-import { paginateAndApplyFilters } from "../utils/paginationAndFilterBuilder";
 import { Controller, Route, Get, Request, BodyProp, Put , IntegerValidator, Body, Query, Tags, SuccessResponse, Post} from "tsoa"; 
 import * as express from 'express'; 
 import { QueryExpressionMap } from "typeorm/query-builder/QueryExpressionMap";
 import { RequestOptions } from "http";
 import { PaginationDoc } from "./models/paginationDoc";
+import { paginateAndApplyFilters } from "../utils/paginationAndFilterBuilder";
 @Route('conferences')
 @Tags('Conference')
 export class ConferenceContoller extends Controller {
@@ -23,9 +23,9 @@ export class ConferenceContoller extends Controller {
     @Get("/{conference_year}")
     async getAllConferences(conference_year: string,
                             @Request() request: express.Request,
-                            @Query('filter') filter?: string,
-                            @Query('limit') limit?: string,
-                            @Query('offset') offset?: string,
+                            @Query('filter') filter?: string[],
+                            @Query('limit') limit?: number,
+                            @Query('offset') offset?: number,
                             @Query('sort') sort?: string
                             ) {
         
@@ -35,9 +35,20 @@ export class ConferenceContoller extends Controller {
         
         var query = this.conferenceRepo
                         .createQueryBuilder('conference')
-        paginateAndApplyFilters(request, query, 'conference')
+                        .where("year=:year", {year: conference_year})
 
-        return this.conferenceRepo.find({year:conference_year})
+        paginateAndApplyFilters('conference',query, filter, limit, offset, sort, true); 
+        console.log(query.getSql());
+        
+        return query.getManyAndCount()
+        .then(result=>{
+            console.log(result[0]);
+            
+            return {
+                conferences: result[0], 
+                count: result[1]
+            } as PaginatedConference
+        })
     }
 
     /**

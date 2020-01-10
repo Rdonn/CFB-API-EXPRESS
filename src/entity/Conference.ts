@@ -9,7 +9,14 @@ export class Conference{
     @PrimaryColumn()
     year: string; 
 
+
     @OneToMany(type=>Team, team=>team.conference)
     teams: Team[]; 
 
+}
+
+export class PaginatedConference{
+    conferences: Conference[]; 
+
+    count: number; 
 }

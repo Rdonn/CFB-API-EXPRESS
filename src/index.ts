@@ -2,6 +2,7 @@ import "reflect-metadata";
 import {createConnection} from "typeorm";
 import express from "express";
 import * as bodyParser from "body-parser";
+import * as cors from "cors"; 
 import {Request, Response} from "express";
 import {PlayerRoutes, TeamRoutes, ConferenceRoutes} from "./routes";
 import { ConferenceContoller } from "./controller/ConferenceController";
@@ -15,6 +16,8 @@ createConnection().then(async connection => {
     // create express app
     const app = express();
     app.use(bodyParser.json());
+    var cors = require('cors'); 
+    app.use(cors()); 
     console.log("here");
     
     

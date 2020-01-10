@@ -1,4 +1,9 @@
-export interface Representation{
+export class Representation{
+
+
+    player_id: number;
+
+    year_played: string;
 
     allPurposeRunning: boolean;
     

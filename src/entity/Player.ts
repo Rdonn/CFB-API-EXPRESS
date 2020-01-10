@@ -123,3 +123,11 @@ export class Player {
 }
 
 
+export class PaginatedPlayer{
+    players: Player[]; 
+
+    count: number; 
+}
+
+
+
