@@ -48,6 +48,13 @@
 				"last_school": {
 					"type": "string"
 				},
+				"has_stats": {
+					"type": "boolean"
+				},
+				"rank": {
+					"type": "string",
+					"x-nullable": true
+				},
 				"team": {
 					"$ref": "#/definitions/Team"
 				},
@@ -120,6 +127,7 @@
 				"weight",
 				"hometown",
 				"last_school",
+				"has_stats",
 				"team",
 				"allPurposeRunning",
 				"fumbleReturns",
@@ -1457,6 +1465,37 @@
 				]
 			}
 		},
+		"/players/player/statistics/{player_id}": {
+			"get": {
+				"operationId": "GetPlayerWithStatistics",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Player"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"Players"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "player_id",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
 		"/players/player/{player_id}": {
 			"get": {
 				"operationId": "GetPlayerYears",
@@ -2238,6 +2277,93 @@
 								"team_name"
 							]
 						}
+					}
+				]
+			}
+		},
+		"/statistics/player/passing": {
+			"get": {
+				"operationId": "GetRankingForPassing",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/PaginatedPlayer"
+						}
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					}
+				]
+			}
+		},
+		"/statistics/player/receiving": {
+			"get": {
+				"operationId": "GetRankingForReceiving",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/PaginatedPlayer"
+						}
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					}
+				]
+			}
+		},
+		"/statistics/player/rushing": {
+			"get": {
+				"operationId": "GetRankingForRushing",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/PaginatedPlayer"
+						}
+					}
+				},
+				"tags": [
+					"Statistics"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"format": "double",
+						"type": "number"
 					}
 				]
 			}

@@ -42,6 +42,7 @@ export class PlayerController extends Controller{
     };
     
 
+    
     @Get("")
     async getPlayers(
     @Query('team_filter') teamFilter?: string[],
@@ -51,11 +52,6 @@ export class PlayerController extends Controller{
     @Query('sort') sort?: string){
         var query = this.playerRepo.createQueryBuilder('player')
         .innerJoinAndSelect('player.team', 'team');
-        console.log('hit on base get');
-        
-        console.log(teamFilter);
-        console.log(playerFilter);
-        
         
         
         paginateWithLimitAndOffset(query, limit, offset); 
@@ -70,6 +66,24 @@ export class PlayerController extends Controller{
         })
 
         
+    }
+
+    @Get("/player/statistics/{player_id}")
+    async getPlayerWithStatistics(player_id: string){
+        var query = this.playerRepo.createQueryBuilder('player')
+        .where("player.player_id=:id", {id: player_id})
+
+
+        Object.keys(this.playerCategories).forEach(result=>{
+            query.leftJoinAndSelect(`player.${result}`, result);
+            
+        })
+
+        query.leftJoinAndSelect('player.team', 'team')
+
+        return query.getMany(); 
+
+
     }
 
     @Get("/player/{player_id}")

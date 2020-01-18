@@ -32,6 +32,8 @@ const models: TsoaRoute.Models = {
             "weight": { "dataType": "double", "required": true },
             "hometown": { "dataType": "string", "required": true },
             "last_school": { "dataType": "string", "required": true },
+            "has_stats": { "dataType": "boolean", "required": true },
+            "rank": { "dataType": "string" },
             "team": { "ref": "Team", "required": true },
             "allPurposeRunning": { "ref": "AllPurposeRunning", "required": true },
             "fumbleReturns": { "ref": "FumbleReturns", "required": true },
@@ -459,6 +461,28 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/players/player/statistics/:player_id',
+        function(request: any, response: any, next: any) {
+            const args = {
+                player_id: { "in": "path", "name": "player_id", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new PlayerController();
+
+
+            const promise = controller.getPlayerWithStatistics.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/players/player/:player_id',
         function(request: any, response: any, next: any) {
             const args = {
@@ -847,6 +871,72 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.addTeamToConference.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/statistics/player/passing',
+        function(request: any, response: any, next: any) {
+            const args = {
+                limit: { "in": "query", "name": "limit", "dataType": "double" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new StatisticsController();
+
+
+            const promise = controller.getRankingForPassing.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/statistics/player/receiving',
+        function(request: any, response: any, next: any) {
+            const args = {
+                limit: { "in": "query", "name": "limit", "dataType": "double" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new StatisticsController();
+
+
+            const promise = controller.getRankingForReceiving.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/statistics/player/rushing',
+        function(request: any, response: any, next: any) {
+            const args = {
+                limit: { "in": "query", "name": "limit", "dataType": "double" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new StatisticsController();
+
+
+            const promise = controller.getRankingForRushing.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

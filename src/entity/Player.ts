@@ -62,6 +62,11 @@ export class Player {
     @Column({nullable: true})
     last_school: string; 
 
+    @Column({default: true})
+    has_stats: boolean; 
+
+    rank?: string;
+
     @ManyToOne(type=>Team, team=>team.players)
     team: Team;
 

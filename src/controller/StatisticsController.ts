@@ -1,5 +1,5 @@
-import { Controller, Route, Tags, Put, BodyProp } from "tsoa";
-import { Player } from "../entity/Player";
+import { Controller, Route, Tags, Put, BodyProp, Get, Query } from "tsoa";
+import { Player, PaginatedPlayer } from "../entity/Player";
 import { getRepository, FileLogger } from "typeorm";
 import { FumbleReturns } from "../entity/Fumble Returns";
 import { AllPurposeRunning } from "../entity/All-Purpose Running";
@@ -19,6 +19,7 @@ import { TacklesForLoss } from "../entity/Tackles For Loss";
 import { Tackles } from "../entity/Tackles";
 import { YardsFromScrimmage } from "../entity/Yards From Scrimmage";
 import { TotalOffense } from "../entity/Total Offense";
+import { isUndefined } from "util";
 
 @Route("statistics")
 @Tags("Statistics")
@@ -42,6 +43,61 @@ export class StatisticsController extends Controller{
     private tacklesRepo = getRepository(Tackles);
     private yardsFromScrimmageRepo = getRepository(YardsFromScrimmage); 
     private totalOffenseRepo = getRepository(TotalOffense);  
+
+
+
+    @Get("/player/passing")
+    async getRankingForPassing(@Query('limit') limit?: number){
+        return this.playerRepo.createQueryBuilder('player')
+        .innerJoinAndSelect('player.passing','passing')
+        .addSelect('RANK () OVER ( ORDER BY passing.yards DESC )', 'rank') 
+        .limit(isUndefined(limit) ? 100 : Number(limit))
+        .getRawAndEntities()
+        .then(result=>{
+            result.raw.forEach((_, index, array)=>{
+                result.entities[index].rank = String(array[index].rank)
+            })
+
+            return {players: result.entities, count: result.entities.length} as PaginatedPlayer; 
+        }); 
+
+        
+    }
+
+    @Get("/player/receiving")
+    async getRankingForReceiving(@Query('limit') limit?: number){
+        return this.playerRepo.createQueryBuilder('player')
+        .innerJoinAndSelect('player.receiving','receiving')
+        .addSelect('RANK () OVER ( ORDER BY receiving.yards DESC )', 'rank') 
+        .limit(isUndefined(limit) ? 100 : Number(limit))
+        .getRawAndEntities()
+        .then(result=>{
+            result.raw.forEach((_, index, array)=>{
+                result.entities[index].rank = String(array[index].rank)
+            })
+            return {players: result.entities, count: result.entities.length} as PaginatedPlayer; 
+        }); 
+
+        
+    }
+
+    @Get("/player/rushing")
+    async getRankingForRushing(@Query('limit') limit?: number){
+        return this.playerRepo.createQueryBuilder('player')
+        .innerJoinAndSelect('player.rushing','rushing')
+        .addSelect('RANK () OVER ( ORDER BY rushing.yards DESC )', 'rank') 
+        .limit(isUndefined(limit) ? 100 : Number(limit))
+        .getRawAndEntities()
+        .then(result=>{
+            result.raw.forEach((_, index, array)=>{
+                result.entities[index].rank = String(array[index].rank)
+            })
+            return {players: result.entities, count: result.entities.length} as PaginatedPlayer; 
+        }); 
+
+        
+    }
+
     @Put("/allPurposeRunning")
     addAllPurposeRunning(
 

@@ -16,7 +16,7 @@
     "reflect-metadata": "^0.1.10",
     "sqlite3": "^4.1.1",
     "swagger-ui-express": "^4.1.2",
-    "typeorm": "0.2.18"
+    "typeorm": "^0.2.22"
   },
   "scripts": {
     "start": "ts-node src/index.ts",
